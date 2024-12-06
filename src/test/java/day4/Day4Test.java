@@ -125,4 +125,56 @@ class Day4Test {
 
         assertEquals(11, total);
     }
+
+
+    @Test
+    void testFor_X_MAS_part2_firstPattern() throws IOException {
+        Day4 sampleInput = new Day4("src/test/resources/day4/masTestInput1.txt");
+        String[][] grid = sampleInput.getGrid();
+
+        Integer result = sampleInput.searchOrthogonally(grid, "MAS");
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    void testFor_X_MAS_part2_secondPattern() throws IOException {
+        Day4 sampleInput = new Day4("src/test/resources/day4/masTestInput2.txt");
+        String[][] grid = sampleInput.getGrid();
+
+        Integer result = sampleInput.searchOrthogonally(grid, "MAS");
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    void testFor_X_MAS_part2_thirdPattern() throws IOException {
+        Day4 sampleInput = new Day4("src/test/resources/day4/masTestInput3.txt");
+        String[][] grid = sampleInput.getGrid();
+
+        Integer result = sampleInput.searchOrthogonally(grid, "MAS");
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    void testFor_X_MAS_part2_fourthPattern() throws IOException {
+        Day4 sampleInput = new Day4("src/test/resources/day4/masTestInput4.txt");
+        String[][] grid = sampleInput.getGrid();
+
+        Integer result = sampleInput.searchOrthogonally(grid, "MAS");
+
+        assertEquals(1, result);
+    }
+
+
+    @Test
+    void testFor_X_MAS_part2_TestData() throws IOException {
+        Day4 sampleInput = new Day4("src/test/resources/day4/masTestInput.txt");
+        String[][] grid = sampleInput.getGrid();
+
+        Integer result = sampleInput.searchOrthogonally(grid, "MAS");
+
+        assertEquals(9, result);
+    }
 }

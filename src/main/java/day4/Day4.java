@@ -2,6 +2,7 @@ package day4;
 
 import utils.FileUtils;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +135,7 @@ public class Day4 {
 
     private String reverse(String maybeWord) {
         StringBuilder sb = new StringBuilder();
-        for (int i=maybeWord.length(); i>0; i--) {
+        for (int i=maybeWord.length()-1; i>=0; i--) {
             sb.append(maybeWord.charAt(i));
         }
         return sb.toString();
@@ -324,6 +325,87 @@ public class Day4 {
 
         List<Integer> xmas = day4.search(grid, KEYWORD);
         int total = day4.getTotal(xmas);
-        System.out.println(total);
+        System.out.println(KEYWORD + " = " + total);
+
+        System.out.println("MAS in an X = " + day4.searchOrthogonally(grid, "MAS"));
+    }
+
+    public Integer searchOrthogonally(String[][] grid, String keyword) {
+        int count = 0;
+
+        // reverse between the two
+        List<Point> pointsFwdDiagDown = new ArrayList<>();
+        List<Point> pointsBackDiagUp = new ArrayList<>();
+
+        // reverse between the two
+        List<Point> pointsFwdDiagUp = new ArrayList<>();
+        List<Point> pointsBackDiagDown = new ArrayList<>();
+
+        int startRow = 0;
+        int endRow = grid.length;
+        System.out.println("RowsMAS StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length;
+        System.out.println("ColsMAS StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // iterate rows
+            for(int j=startCol; j<endCol; j++) { // cols
+                String maybeWord = null;
+                // forwards and down:
+                int startRow1 = 0;
+                int endRow1 = grid.length-keyword.length()+1;
+                int startCol1 =0;
+                int endCol1 = grid[0].length-keyword.length()+1;
+
+                if (i >= startRow1 && i < endRow1
+                 && j>=startCol1 && j < endCol1) {
+                    maybeWord = getCharsDiagonallyForwardsAndDown(grid, keyword, i, j);
+                    if (maybeWord.equals(keyword)) {
+                        pointsFwdDiagDown.add(new Point(i, j));
+                    }
+                    if (reverse(maybeWord).equals(keyword)) {
+                        int xCoord = i + keyword.length()-1;
+                        int yCoord = j + keyword.length()-1;
+                        pointsBackDiagUp.add(new Point(xCoord, yCoord));
+                    }
+                }
+
+
+                int startRow2 = keyword.length()-1;
+                int endRow2 = grid.length;
+                int startCol2 = 0;
+                int endCol2 = grid[0].length-keyword.length()+1;
+
+                // Backwards and Up:
+                if (i >= startRow2 && i < endRow2
+                        && j >= startCol2 && j < endCol2)  {
+                    maybeWord = getCharsDiagonallyForwardsAndUp(grid, keyword, i, j);
+                    if (maybeWord.equals(keyword)) {
+                        pointsFwdDiagUp.add(new Point(i, j));
+                    }
+                    if (reverse(maybeWord).equals(keyword)) {
+                        int rowCoord = i - keyword.length()+1;
+                        int colCoord = j + keyword.length()-1;
+                        pointsBackDiagDown.add(new Point(rowCoord, colCoord));
+                    }
+                }
+            }
+        }
+
+        for (Point point : pointsFwdDiagDown) {
+               if (pointsFwdDiagUp.contains(new Point(point.x+keyword.length()-1, point.y))
+                || pointsBackDiagDown.contains(new Point(point.x, point.y+keyword.length()-1))) {
+                   count++;
+               }
+        }
+
+        for (Point point : pointsBackDiagUp) {
+            if (pointsBackDiagDown.contains(new Point(point.x-keyword.length()+1, point.y))
+                    || pointsFwdDiagUp.contains(new Point(point.x, point.y-keyword.length()+1))) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }
