@@ -43,8 +43,16 @@ public class Day4 {
 
     public Integer searchDiagonallyBackwardsUp(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=keyword.length()-1; i<grid.length; i++) { // iterate rows
-            for(int j=keyword.length()-1; j<grid[0].length; j++) { // cols
+
+        int startRow = keyword.length()-1;
+        int endRow = grid.length;
+        System.out.println("searchDiagBackUp StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = keyword.length()-1;
+        int endCol = grid[0].length;
+        System.out.println("searchDiagBackUp StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // iterate rows
+            for(int j=startCol; j<endCol; j++) { // cols
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsDiagonallyBackwardsAndUp(grid, keyword, i, j);
 //                System.out.println(maybeWord);
@@ -69,8 +77,16 @@ public class Day4 {
 
     public Integer searchDiagonallyForwardsUp(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=keyword.length()-1; i<grid.length; i++) { // iterate rows
-            for(int j=0; j<grid[0].length-keyword.length()+1; j++) { // cols
+
+        int startRow = keyword.length()-1;
+        int endRow = grid.length;
+        System.out.println("searchDiagFwdUp StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length-keyword.length()+1;
+        System.out.println("searchDiagFwdUp StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // iterate rows
+            for(int j=startCol; j<endCol; j++) { // cols
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsDiagonallyForwardsAndUp(grid, keyword, i, j);
 //                System.out.println(maybeWord);
@@ -96,15 +112,15 @@ public class Day4 {
     public Integer searchDiagonallyForwardsDown(String[][] grid, String keyword) {
         int count = 0;
 
-        int startCol = grid.length;
-        int endCol = grid.length-keyword.length()+1;
-        System.out.println("searchDownwards StartRow,EndRow: " + startCol + "," + endCol);
         int startRow = 0;
-        int endRow = grid.length;
-        System.out.println("searchDownwards StartCol,EndCol: " + startRow + "," + endRow);
+        int endRow = grid.length-keyword.length()+1;
+        System.out.println("searchDiagFwdDown StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length-keyword.length()+1;
+        System.out.println("searchDiagFwdDown StartCol,EndCol: " + startCol + "," + endCol);
 
-        for(int i=0; i<grid.length-keyword.length()+1; i++) { // iterate rows
-            for(int j=0; j<grid[0].length-keyword.length()+1; j++) { // cols
+        for(int i=startRow; i<endRow; i++) { // iterate rows
+            for(int j=startCol; j<endCol; j++) { // cols
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsDiagonallyForwardsAndDown(grid, keyword, i, j);
 //                System.out.println(maybeWord);
@@ -137,8 +153,19 @@ public class Day4 {
 
     public Integer searchDiagonallyBackwardsDown(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=0; i<grid.length-keyword.length()+1; i++) { // iterate rows
-            for(int j=keyword.length()-1; j<grid[0].length; j++) { // cols
+
+        int startRow = 0;
+        int endRow = grid.length-keyword.length()+1;
+        System.out.println("searchDiagBackDown StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = keyword.length()-1;
+        int endCol = grid[0].length;
+        System.out.println("searchDiagBackDown StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // iterate rows
+            for(int j=startCol; j<endCol; j++) { // cols
+
+//        for(int i=0; i<grid.length-keyword.length()+1; i++) { // iterate rows
+//            for(int j=keyword.length()-1; j<grid[0].length; j++) { // cols
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsDiagonallyBackwardsAndDown(grid, keyword, i, j);
 //                System.out.println(maybeWord);
