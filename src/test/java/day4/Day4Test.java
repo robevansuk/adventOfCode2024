@@ -52,7 +52,7 @@ class Day4Test {
 
         Integer xmas = testDownwards.searchDownwards(grid, "XMAS");
 
-        assertEquals(1, xmas);
+        assertEquals(9, xmas);
     }
 
     @Test

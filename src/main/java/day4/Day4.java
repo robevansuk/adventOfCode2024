@@ -9,7 +9,7 @@ import java.util.List;
 public class Day4 {
 
     private static final String INPUT = "src/main/resources/day4/input.txt";
-    private static final String KEYWORD = "XMAS";
+    private static final String KEYWORD = "SAMX";
     private String[][] grid;
 
     public Day4(String input) throws IOException {
@@ -35,7 +35,6 @@ public class Day4 {
 
         return results;
     }
-
 
     public int getTotal(List<Integer> counts) {
         return counts.stream().mapToInt(Integer::intValue).sum();
@@ -205,9 +204,6 @@ public class Day4 {
 //                System.out.println(maybeWord);
                 if (maybeWord.equals(keyword)) {
                     count++;
-                    // small optimisation
-                    // subtract 1 here because the loop will also add 1 - so we need to negate that effect
-                    j += keyword.length()-1;
                 }
             }
         }
@@ -226,7 +222,7 @@ public class Day4 {
     public Integer searchUpwards(String[][] grid, String keyword) {
         int count = 0;
 
-        int startRow  = 0+keyword.length()-1;
+        int startRow  = keyword.length()-1;
         int endRow =  grid.length;
         System.out.println("searchUpwards StartRow,EndRow: " + startRow + "," + endRow);
         int startCol = 0;
@@ -301,7 +297,7 @@ public class Day4 {
         int endCol = grid[0].length-keyword.length()+1;
         System.out.println("searchForwards StartCol,EndCol: " + startCol + "," + endCol);
 
-        for(int i=0; i<endRow; i++) { // iterate across all rows
+        for(int i=startRow; i<endRow; i++) { // iterate across all rows
             for(int j=startCol; j<endCol; j++) {// iterate over all chars (up to the last 4/length of the keyword being searched for)
                 String maybeWord = getCharsLeftToRight(grid[i], keyword, j);
                 if (maybeWord.equals(keyword)) {
@@ -326,7 +322,7 @@ public class Day4 {
         Day4 day4 = new Day4(INPUT);
         String[][] grid = day4.getGrid();
 
-        List<Integer> xmas = day4.search(grid, "XMAS");
+        List<Integer> xmas = day4.search(grid, KEYWORD);
         int total = day4.getTotal(xmas);
         System.out.println(total);
     }
