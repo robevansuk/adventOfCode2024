@@ -72,7 +72,7 @@ class Day4Test {
 
         Integer xmas = testDiagonallyBackDown.searchDiagonallyBackwardsDown(grid, "XMAS");
 
-        assertEquals(4, xmas);
+        assertEquals(5, xmas);
     }
 
     @Test

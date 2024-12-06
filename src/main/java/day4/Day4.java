@@ -36,6 +36,11 @@ public class Day4 {
         return results;
     }
 
+
+    public int getTotal(List<Integer> counts) {
+        return counts.stream().mapToInt(Integer::intValue).sum();
+    }
+
     public Integer searchDiagonallyBackwardsUp(String[][] grid, String keyword) {
         int count = 0;
         for(int i=keyword.length()-1; i<grid.length; i++) { // iterate rows
@@ -90,6 +95,14 @@ public class Day4 {
 
     public Integer searchDiagonallyForwardsDown(String[][] grid, String keyword) {
         int count = 0;
+
+        int startCol = grid.length;
+        int endCol = grid.length-keyword.length()+1;
+        System.out.println("searchDownwards StartRow,EndRow: " + startCol + "," + endCol);
+        int startRow = 0;
+        int endRow = grid.length;
+        System.out.println("searchDownwards StartCol,EndCol: " + startRow + "," + endRow);
+
         for(int i=0; i<grid.length-keyword.length()+1; i++) { // iterate rows
             for(int j=0; j<grid[0].length-keyword.length()+1; j++) { // cols
 //                System.out.println(i + "," + j);
@@ -150,8 +163,16 @@ public class Day4 {
 
     public Integer searchDownwards(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=0; i<grid.length-keyword.length()+1; i++) { // rows
-            for(int j=0; j<grid[0].length; j++) {// cols
+
+        int startRow = 0;
+        int endRow = grid.length-keyword.length()+1;
+        System.out.println("searchDownwards StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length;
+        System.out.println("searchDownwards StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // rows
+            for(int j=startCol; j<endCol; j++) {// cols
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsTopToBottom(grid, keyword, i, j);
 //                System.out.println(maybeWord);
@@ -177,13 +198,20 @@ public class Day4 {
 
     public Integer searchUpwards(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=0; i<grid[0].length; i++) { // iterate across all columns
-            for(int j=grid.length-1; j>keyword.length()-2; j--) {// iterate over all chars down the column
+
+        int startRow  = 0+keyword.length()-1;
+        int endRow =  grid.length;
+        System.out.println("searchUpwards StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length;
+        System.out.println("searchUpwards StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) { // iterate across all rows
+            for(int j=startCol; j<endCol; j++) {// iterate over all chars down the column
+//                System.out.println(i + "," + j);
                 String maybeWord = getCharsBottomToTop(grid, keyword, i, j);
                 if (maybeWord.equals(keyword)) {
                     count++;
-                    // subtract 1 here because the loop will also add 1 - so we need to negate that effect
-                    j -= keyword.length()-2;
                 }
             }
         }
@@ -194,15 +222,25 @@ public class Day4 {
     private String getCharsBottomToTop(String[][] grid, String keyword, int i, int j) {
         StringBuilder sb = new StringBuilder();
         for (int y=0; y<keyword.length(); y++) {
-            sb.append(grid[j-y][i]);
+            int row = i-y;
+            int col = j;
+            sb.append(grid[row][col]);
         }
         return sb.toString();
     }
 
     public Integer searchBackwards(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=0; i<grid.length; i++) {
-            for(int j=keyword.length()-1; j<grid[i].length; j++) {
+
+        int startRow = 0;
+        int endRow = grid.length;
+        System.out.println("searchBackwards StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = keyword.length()-1;
+        int endCol = grid[0].length;
+        System.out.println("searchBackwards StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=startRow; i<endRow; i++) {
+            for(int j=startCol; j<endCol; j++) {
 //                System.out.println(i + "," + j);
                 String maybeWord = getCharsRightToLeft(grid, keyword, i, j);
 //                System.out.println(maybeWord);
@@ -228,8 +266,16 @@ public class Day4 {
 
     public Integer searchForwards(String[][] grid, String keyword) {
         int count = 0;
-        for(int i=0; i<grid.length; i++) { // iterate across all rows
-            for(int j=0; j<grid[i].length-keyword.length()+1; j++) {// iterate over all chars (up to the last 4/length of the keyword being searched for)
+
+        int startRow = 0;
+        int endRow = grid.length;
+        System.out.println("searchForwards StartRow,EndRow: " + startRow + "," + endRow);
+        int startCol = 0;
+        int endCol = grid[0].length-keyword.length()+1;
+        System.out.println("searchForwards StartCol,EndCol: " + startCol + "," + endCol);
+
+        for(int i=0; i<endRow; i++) { // iterate across all rows
+            for(int j=startCol; j<endCol; j++) {// iterate over all chars (up to the last 4/length of the keyword being searched for)
                 String maybeWord = getCharsLeftToRight(grid[i], keyword, j);
                 if (maybeWord.equals(keyword)) {
                     count++;
@@ -256,9 +302,5 @@ public class Day4 {
         List<Integer> xmas = day4.search(grid, "XMAS");
         int total = day4.getTotal(xmas);
         System.out.println(total);
-    }
-
-    public int getTotal(List<Integer> counts) {
-        return counts.stream().mapToInt(Integer::intValue).sum();
     }
 }
