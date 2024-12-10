@@ -91,10 +91,6 @@ public class Day6 {
                 throw new IllegalStateException("Unexpected value: " + direction);
         }
 
-        if (checkIfBarrierAheadCausesLoop(guardLocation, direction)) {
-            loopPossibilityCount++;
-        }
-
         map[guardLocation.y][guardLocation.x] = "^";
 
 //        printMaps();
@@ -529,8 +525,13 @@ public class Day6 {
                 && guardLocation.x >=0 && guardLocation.x < map[0].length){
             Point currentGuardLocation = guardLocation;
             Point newGuardLocation = moveGuardForwards();
+
             if (currentGuardLocation.equals(newGuardLocation)) {
                 break; // end of patrol - guard exited the map.
+            }
+
+            if (checkIfBarrierAheadCausesLoop(guardLocation, direction)) {
+                loopPossibilityCount++;
             }
         }
         return loopPossibilityCount;

@@ -129,28 +129,42 @@ public class Day6Test {
     void testMovingAroundResultsInTheRightSymbols() {
         assertEquals(Direction.UP, testObject.getDirection());
         //take 6 steps on test map
-        for (int i = 0; i < 6; i++) {
-            testObject.moveGuardForwards();
-        }
-        assertEquals(Direction.RIGHT, testObject.getDirection());
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
 
+        assertEquals(Direction.RIGHT, testObject.getDirection());
         assertEquals("|", testObject.getPathMap()[6][4]);
         assertEquals("|", testObject.getPathMap()[5][4]);
         assertEquals("|", testObject.getPathMap()[4][4]);
         assertEquals("|", testObject.getPathMap()[3][4]);
         assertEquals("|", testObject.getPathMap()[2][4]);
+
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+        testObject.moveGuardForwards();
+
         System.out.println("---------------------------------------------------");
 
-        for (int i = 0; i < 6; i++) {
-            testObject.moveGuardForwards();
-        }
         assertEquals(Direction.DOWN, testObject.getDirection());
+        testObject.moveGuardForwards();
         assertEquals("+", testObject.getPathMap()[1][4]);
+        testObject.moveGuardForwards();
         assertEquals("-", testObject.getPathMap()[1][5]);
+        testObject.moveGuardForwards();
         assertEquals("-", testObject.getPathMap()[1][6]);
+        testObject.moveGuardForwards();
         assertEquals("-", testObject.getPathMap()[1][7]);
+        testObject.moveGuardForwards();
         assertEquals("+", testObject.getPathMap()[1][8]);
+        testObject.moveGuardForwards();
         assertEquals("|", testObject.getPathMap()[2][8]);
+        testObject.moveGuardForwards();
         System.out.println("---------------------------------------------------");
 
         for (int i = 0; i < 4; i++) {
