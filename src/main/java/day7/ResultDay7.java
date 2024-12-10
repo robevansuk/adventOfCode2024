@@ -5,14 +5,22 @@ import java.util.List;
 public class ResultDay7 {
     protected boolean result;
     protected List<String> ops;
-    protected int targetValue;
+    protected Long targetValue;
     protected List<Integer> inputs;
 
-    public ResultDay7(boolean result, List<String> ops, List<Integer> inputs, int targetValue) {
+    public ResultDay7(boolean result, List<String> ops, List<Integer> inputs, Long targetValue) {
         this.result = result;
         this.ops = ops;
         this.inputs = inputs;
         this.targetValue = targetValue;
+    }
+
+    public boolean isPossible() {
+        return result;
+    }
+
+    public Long getTargetValue() {
+        return targetValue;
     }
 
     @Override
@@ -34,5 +42,9 @@ public class ResultDay7 {
                 sb.append(inputs.get(i) + " " + ops.get(i) + " ");
             }
         }
+    }
+
+    public List<String> getOps() {
+        return ops;
     }
 }
