@@ -3,11 +3,7 @@ package day7;
 import utils.FileUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Day7 {
@@ -51,7 +47,7 @@ public class Day7 {
             List<String> endOps = new ArrayList<>();
             for (int i = 0; i < entry.getValue().size() - 1; i++) {
                 startingOps.add("+");
-                endOps.add("*");
+                endOps.add("|");
             }
 
             ResultDay7 result = runCalc(entry.getKey(), entry.getValue(), startingOps, endOps);
@@ -71,7 +67,7 @@ public class Day7 {
 
     // check if the result of combining inputs and ops results in key
     public ResultDay7 runCalc(Long target, List<Integer> inputs, List<String> currentOps, List<String> endOps) {
-        System.out.println("target: " + target + ", inputs: " + inputs + ", currentOps: " + currentOps + ", endOps: " + endOps);
+//        System.out.println("target: " + target + ", inputs: " + inputs + ", currentOps: " + currentOps);
 
         ResultDay7 result = null;
         while (!isPossible(target, currentOps, inputs) && !currentOps.equals(endOps)) {
@@ -88,62 +84,80 @@ public class Day7 {
         return result;
     }
 
-    private boolean isPossible(Long target, List<String> ops, List<Integer> inputs) {
+    public boolean isPossible(Long target, List<String> ops, List<Integer> inputs) {
         Long calcResult = 0l;
-        for (int i = 1; i < inputs.size(); i++) {
-            switch (ops.get(i - 1)) {
-                case "*":
-                    if (i == 1) {
-                        calcResult = Long.valueOf(inputs.get(0)) * Long.valueOf(inputs.get(1));
-                    } else {
-                        calcResult = calcResult * inputs.get(i);
-                    }
-                    break;
-                case "+":
-                    if (i == 1) {
-                        calcResult = Long.valueOf(inputs.get(0)) + Long.valueOf(inputs.get(1));
-                    } else {
-                        calcResult = calcResult + inputs.get(i);
-                    }
-                    break;
+
+        if (inputs.size() > 1) {
+            for (int i = 1; i < inputs.size(); i++) {
+                switch (ops.get(i - 1)) {
+                    case "*":
+                        if (i == 1) {
+                            calcResult = Long.valueOf(inputs.get(0)) * Long.valueOf(inputs.get(1));
+                        } else {
+                            calcResult = calcResult * inputs.get(i);
+                        }
+                        break;
+                    case "+":
+                        if (i == 1) {
+                            calcResult = Long.valueOf(inputs.get(0)) + Long.valueOf(inputs.get(1));
+                        } else {
+                            calcResult = calcResult + inputs.get(i);
+                        }
+                        break;
+                    case "|":
+                        if (i == 1) {
+                            calcResult = Long.valueOf(inputs.get(0).toString() + inputs.get(1).toString());
+                        } else {
+                            calcResult = Long.valueOf(calcResult.toString() + inputs.get(i).toString());
+                        }
+                        break;
+                }
             }
+        } else {
+            calcResult = Long.valueOf(inputs.get(0));
         }
         return calcResult.equals(target);
+    }
+
+    public List<String> removeBars(List<String> ops) {
+        return ops.stream().filter(e -> !e.equals("|")).collect(Collectors.toList());
     }
 
     // run binary count calc - 0000 -> 0001 -> 0010 -> 0011 -> 0100 -> 0101 -> 0110 -> 0111 -> 1000 - then replace 1 with * adn 0 with +
     public List<String> nextOps(List<String> operations) {
         String currentPattern = convertToBinary(String.join("", operations));
-        String nextPattern = getNextBinaryPattern(currentPattern);
+        String nextPattern = getNextPattern(currentPattern);
         String nextOps = convertToString(nextPattern);
         return Arrays.asList(nextOps.split(""));
     }
 
-    public static String getNextBinaryPattern(String currentPattern) {
-        int currentNumber = Integer.parseInt(currentPattern, 2); // base 2 (binary)
+    public static String getNextPattern(String currentPattern) {
+        int currentNumber = Integer.parseInt(currentPattern, 3); // base 2 (binary)
         int nextNumber = currentNumber + 1;
-        String binaryNum = Integer.toBinaryString(nextNumber);
+        String numberBase3 = Integer.toString(nextNumber,3);
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < currentPattern.length() - binaryNum.length(); i++) {
+        for (int i = 0; i < currentPattern.length() - numberBase3.length(); i++) {
             sb.append("0");
         }
-        sb.append(binaryNum);
+        sb.append(numberBase3);
         return sb.toString();
     }
 
     public static String convertToBinary(String pattern) {
         // Replace '-' with '0' and '+' with '1' in the string
-        StringBuilder binaryString = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (char ch : pattern.toCharArray()) {
             if (ch == '+') {
-                binaryString.append('0');
+                sb.append('0');
             } else if (ch == '*') {
-                binaryString.append('1');
+                sb.append('1');
+            } else if (ch == '|') {
+                sb.append('2');
             } else {
                 throw new IllegalArgumentException("Invalid character in pattern: " + ch);
             }
         }
-        return binaryString.toString();
+        return sb.toString();
     }
 
     /**
@@ -162,19 +176,13 @@ public class Day7 {
                 operatorString.append('+');
             } else if (ch == '1') {
                 operatorString.append('*');
+            } else if (ch == '2') {
+                operatorString.append('|');
             } else {
                 throw new IllegalArgumentException("Invalid character in pattern: " + ch);
             }
         }
         return operatorString.toString();
-    }
-
-    private String getString(int input, int bitmask) {
-        if ((input & bitmask) == 0) {
-            return "+";
-        } else {
-            return "*";
-        }
     }
 
     public static void main(String[] args) throws IOException {
