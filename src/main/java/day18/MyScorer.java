@@ -8,7 +8,7 @@ public class MyScorer {
     }
 
     public double computeCost(Point from, Point to) {
-        double R = 6372.8; // Earth's Radius, in kilometers
+        double R = 1;
 
         double dLat = Math.toRadians(to.getX() - from.getX());
         double dLon = Math.toRadians(to.getY() - from.getY());
